@@ -8,7 +8,7 @@ const AxellersLoader = {
     scriptTag.async = true;
     scriptTag.crossorigin = ""
     scriptTag.type = "text/javascript";
-    scriptTag.src = "http://localhost:4000/public/axellers-link.js";
+    scriptTag.src = "https://cdn.jsdelivr.net/gh/axellers/react-axellers-link@bbbc66bffc243ef680fd110840e9e6e15b0b73c5/public/js/axellers-link.js";
     scriptTag.onload = callback;
 
     var otherScripts = document.getElementsByTagName("script");
