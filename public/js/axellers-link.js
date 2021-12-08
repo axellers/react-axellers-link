@@ -14,20 +14,19 @@ var Axellers = {
     onLoad: () => { },
     onExit: () => { }
   }) => {
-    // handle passed in variables and initialize Link component
     return {
-      open: options => {
+      open: (options) => {
         const { onSuccess, onExit, publicKey, dev } = config;
+
         let container = document.createElement("span");
         container.className = "selectorgadget_ignore";
         document.body.appendChild(container);
         window.Axellers._axellersContainer = container;
-        let authComplete = false; // MUST CALL window.open IMMEDIATELY OTHERWISE POPUP BLOCKED ON MOBILE
 
+        let authComplete = false;
         let defaultUrl = "https://production.axellers.io";
-
-        if ("development" === "development" || dev?.openUrl) {
-          if (dev?.openUrl) {
+        if ("development" === "development" || dev.openUrl) {
+          if (dev.openUrl) {
             defaultUrl = dev.openUrl;
           } else {
             defaultUrl = "http://localhost:4000";
@@ -35,15 +34,15 @@ var Axellers = {
         }
 
         const nonce = getNonce(5);
-        let iframeUri = `${defaultUrl}/linkstart/${publicKey}?token=${publicKey}&origin=${encodeURIComponent(window.location.origin)}&nonce=${nonce}`;
-
-        if (options?.platform) {
+        let iframeUri = `${defaultUrl}?token=${publicKey}&origin=${encodeURIComponent(window.location.origin)}&nonce=${nonce}`;
+        if (options.platform) {
           iframeUri += `&platform=${options.platform}`;
         }
 
         const newWindow = window.open(iframeUri, "axellerslinkwindow", "menubar=1,resizable=1,width=800,height=700");
+        
         const popupTick = setInterval(() => {
-          if (newWindow?.closed) {
+          if (newWindow.closed) {
             if (!authComplete && onExit) {
               onExit("MERCHANT_CLOSED");
             }
@@ -56,26 +55,16 @@ var Axellers = {
           if (typeof event.data === "string") {
             try {
               const parsedMessage = JSON.parse(event.data);
-              const {
-                nonce: frameNonce
-              } = parsedMessage;
-
+              
+              const { nonce } = parsedMessage;
               if (frameNonce !== nonce) {
-                // DIFFERENT FRAME
                 return;
-              } // Handle message (public token only for now)
+              }
 
-
-              const {
-                type
-              } = parsedMessage;
-
+              const { type } = parsedMessage;
               if (type === "SUCCESS") {
-                const {
-                  publicToken
-                } = parsedMessage;
+                const { publicToken } = parsedMessage;
                 authComplete = true;
-
                 if (onSuccess) {
                   onSuccess(publicToken);
                 }
@@ -83,21 +72,14 @@ var Axellers = {
                 if (onExit) {
                   onExit();
                 }
-
-                newWindow?.close();
-              } else if (type === "OAUTH_INITIATE") {
-                const {
-                  link
-                } = parsedMessage;
+                newWindow.close();
               }
             } catch (e) {
-              if (e.message?.includes("Unexpected")) {
-                // ignore non JSON messages
+              if (e.message.includes("Unexpected")) {
                 return;
-              } // link
+              }
               console.error(e);
             }
-
             if (onExit) {
               onExit("UNKNOWN_ERROR");
               return;
@@ -107,12 +89,13 @@ var Axellers = {
 
         window.addEventListener("message", handleMessage);
       },
-      // can call openAxellers function to do the react stuff
+      
       exit: () => {
         if (window.Axellers._axellersContainer) {
           window.Axellers._axellersContainer.remove();
         }
       },
+
       destroy: () => {
         if (window.Axellers._axellersContainer) {
           window.Axellers._axellersContainer.remove();
@@ -121,4 +104,5 @@ var Axellers = {
     };
   }
 };
+
 window.Axellers = Axellers;
