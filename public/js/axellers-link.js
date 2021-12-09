@@ -26,7 +26,7 @@ var Axellers = {
         let authComplete = false;
         let defaultUrl = "https://production.axellers.io";
         if ("development" === "development" || dev?.openUrl) {
-          if (dev.openUrl) {
+          if (dev?.openUrl) {
             defaultUrl = dev.openUrl;
           } else {
             defaultUrl = "http://localhost:4000";
@@ -35,7 +35,7 @@ var Axellers = {
 
         const nonce = getNonce(5);
         let iframeUri = `${defaultUrl}?token=${publicKey}&origin=${encodeURIComponent(window.location.origin)}&nonce=${nonce}`;
-        if (options.platform) {
+        if (options?.platform) {
           iframeUri += `&platform=${options.platform}`;
         }
 
