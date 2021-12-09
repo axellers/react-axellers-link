@@ -25,7 +25,7 @@ var Axellers = {
 
         let authComplete = false;
         let defaultUrl = "https://production.axellers.io";
-        if ("development" === "development" || dev.openUrl) {
+        if ("development" === "development" || dev?.openUrl) {
           if (dev.openUrl) {
             defaultUrl = dev.openUrl;
           } else {
@@ -42,7 +42,7 @@ var Axellers = {
         const newWindow = window.open(iframeUri, "axellerslinkwindow", "menubar=1,resizable=1,width=800,height=700");
         
         const popupTick = setInterval(() => {
-          if (newWindow.closed) {
+          if (newWindow?.closed) {
             if (!authComplete && onExit) {
               onExit("MERCHANT_CLOSED");
             }
@@ -72,10 +72,10 @@ var Axellers = {
                 if (onExit) {
                   onExit();
                 }
-                newWindow.close();
+                newWindow?.close();
               }
             } catch (e) {
-              if (e.message.includes("Unexpected")) {
+              if (e.message?.includes("Unexpected")) {
                 return;
               }
               console.error(e);
