@@ -7,7 +7,7 @@ const AxellersLoader = {
     var scriptTag = document.createElement("script");
     scriptTag.async = true;
     scriptTag.type = "text/javascript";
-    scriptTag.src = "https://cdn.jsdelivr.net/gh/axellers/react-axellers-link@7ef946249288a4e6a0a8a8bea8e3684a9b86971c/public/js/axellers-link.js";
+    scriptTag.src = "https://cdn.jsdelivr.net/gh/axellers/react-axellers-link@758d0a8a2d1774e54cdb85fb7d9bf7db254a4b6a/public/js/axellers-link.js";
     scriptTag.onload = callback;
 
     var otherScripts = document.getElementsByTagName("script");
