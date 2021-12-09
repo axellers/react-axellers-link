@@ -33,8 +33,8 @@ var Axellers = {
           }
         }
 
-        const nonce = getNonce(5);
-        let iframeUri = `${defaultUrl}?token=${publicKey}&origin=${encodeURIComponent(window.location.origin)}&nonce=${nonce}`;
+        const frameNonce = getNonce(5);
+        let iframeUri = `${defaultUrl}?token=${publicKey}&origin=${encodeURIComponent(window.location.origin)}&nonce=${frameNonce}`;
         if (options?.platform) {
           iframeUri += `&platform=${options.platform}`;
         }
